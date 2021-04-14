@@ -1,11 +1,6 @@
 package com.zipcodewilmington.phonebook;
 
-import java.util.List;
-import java.util.ArrayList;
-//import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by leon on 1/23/18.
@@ -13,42 +8,61 @@ import java.util.Map;
  */
 public class PhoneBook {
 
-    private final Map<String, List<String>> phonebook;
+    private Map<String, List<String>> map;
+        List<String> numbers;
 
     public PhoneBook(Map<String, List<String>> map) {
-        this.phonebook = null;
+
+        this.map = new LinkedHashMap<>(map.size());
     }
 
     public PhoneBook() {
-        this(null);
+
+        this.map = new LinkedHashMap<>();
+        this.numbers = new ArrayList<>();
     }
 
     public void add(String name, String phoneNumber) {
+        numbers.add(phoneNumber);
+        map.put(name, numbers);
     }
 
     public void addAll(String name, String... phoneNumbers) {
+        numbers.addAll(Arrays.asList(phoneNumbers));
+        map.put(name, numbers);
     }
 
     public void remove(String name) {
+        map.remove(name);
     }
 
     public Boolean hasEntry(String name) {
-        return null;
+
+        return map.containsKey(name) || this.numbers.contains(name);
     }
 
     public List<String> lookup(String name) {
-        return null;
+
+        return map.get(name);
     }
 
     public String reverseLookup(String phoneNumber)  {
-        return null;
+        String result = "";
+        for (Map.Entry < String, List<String>> entry: map.entrySet())
+            if (entry.getValue().contains(phoneNumber)){
+                result = entry.getKey();
+            }
+        return result;
     }
 
     public List<String> getAllContactNames() {
-        return null;
+        List<String> names = new ArrayList<>();
+        for (Map.Entry < String, List<String>> entry: map.entrySet())
+            names.add(entry.getKey());
+        return names;
     }
 
     public Map<String, List<String>> getMap() {
-        return null;
+        return this.map;
     }
 }
